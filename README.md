@@ -1,6 +1,6 @@
-# `githodl`
+# `ghdl`
 
-A tool for **gith**ub **do**wn**l**oad.  Slightly rearranged for comedic effect.
+A tool for **g**it**h**ub **d**own**l**oad.
 
 ## Motivation
 
@@ -15,11 +15,11 @@ limited.  This should hopefully provide a better alternative.
 [Click here](https://github.com/settings/tokens)
 
 ```
-githodl 0.1.0
+ghdl 0.1.0
 Tool to pull down specific paths from a github repo
 
 USAGE:
-    githodl [OPTIONS] <repo path> --branch <branch> --repo <repo> [output dir]
+    ghdl [OPTIONS] <repo path> --branch <branch> --repo <repo> [output dir]
 
 FLAGS:
     -h, --help       Prints help information
@@ -38,13 +38,13 @@ ARGS:
 ## Examples
 
 ```
-$ githodl -r rawhat/phoenix_react --api-key ... -b master assets my_asset_folder
+$ ghdl -r rawhat/phoenix_react --api-key ... -b master assets my_asset_folder
 ...
 $ ls my_asset_folder
 package.json package-lock.json ...
+
+$ ghdl -r ryanoasis/nerd-fonts --api-key ... -b master patched-fonts/Iosevka iosevka-nerd-font
+Downloading ...
+$ ls iosekva-nerd-font
+Bold Italic ...
 ```
-
-## TODO
-
-I called `.unwrap()` a lot because I wanted to get it working.  I should
-probably have some better support for error handling.

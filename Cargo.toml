@@ -1,5 +1,5 @@
 [package]
-name = "githodl"
+name = "ghdl"
 version = "0.1.0"
 edition = "2018"
 
