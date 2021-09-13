@@ -2,6 +2,7 @@ use std::env;
 use std::fs;
 use std::path::{Path, PathBuf};
 
+use anyhow::{bail, Context, Result};
 use reqwest::blocking::Client;
 use reqwest::header::{HeaderMap, HeaderValue, ACCEPT, AUTHORIZATION, USER_AGENT};
 use serde::Deserialize;
@@ -55,14 +56,13 @@ struct Opt {
     output: Option<PathBuf>,
 }
 
-fn main() -> Result<(), Box<dyn std::error::Error>> {
+fn main() -> Result<()> {
     let opts = Opt::from_args();
 
     let mut path = PathBuf::new();
     path.push(opts.folder.clone());
     let path = path.clone();
     let parent_folder = path.parent().unwrap_or_else(|| Path::new("."));
-    let name = path.file_name().unwrap();
 
     let contents_url = format!(
         "https://api.github.com/repos/{}/contents/{}",
@@ -87,12 +87,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         .send()?
         .json::<Vec<ContentsResponse>>()?;
 
-    let entry_path = contents
-        .iter()
-        .find(|resp| resp.path == opts.folder)
-        .unwrap()
-        .git_url
-        .clone();
+    let entry_path = match contents.iter().find(|resp| resp.path == opts.folder) {
+        Some(ContentsResponse { git_url, .. }) => git_url.clone(),
+        _ => bail!("Provided folder not found in repository"),
+    };
 
     let tree_entries = client
         .get(entry_path)
@@ -132,9 +130,16 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             .content
             .replace("\n", "");
 
-        let contents = base64::decode(blob).unwrap();
+        let contents = match base64::decode(blob) {
+            Ok(contents) => contents,
+            _ => {
+                println!("Failed to decode blob...");
+                continue;
+            }
+        };
 
-        fs::write(full_path.to_str().unwrap(), contents)?;
+        fs::write(full_path.to_str().unwrap(), contents)
+            .with_context(|| "Could not write contents to file")?;
     }
 
     Ok(())
