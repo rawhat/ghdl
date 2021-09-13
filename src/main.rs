@@ -57,10 +57,9 @@ struct Opt {
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let opts = Opt::from_args();
-    println!("options:  {:?}", opts);
 
     let mut path = PathBuf::new();
-    path.push(opts.folder);
+    path.push(opts.folder.clone());
     let path = path.clone();
     let parent_folder = path.parent().unwrap_or_else(|| Path::new("."));
     let name = path.file_name().unwrap();
@@ -73,7 +72,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let mut headers = HeaderMap::new();
     headers.insert(ACCEPT, HeaderValue::from_static("vnd.github.v3+json"));
-    if let Some(api_token) = opts.api_key {
+    if let Some(ref api_token) = opts.api_key {
         headers.insert(
             AUTHORIZATION,
             HeaderValue::from_str(format!("token {}", &api_token).as_str()).unwrap(),
@@ -90,7 +89,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let entry_path = contents
         .iter()
-        .find(|resp| resp.path == name.to_str().unwrap())
+        .find(|resp| resp.path == opts.folder)
         .unwrap()
         .git_url
         .clone();
