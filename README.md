@@ -1,14 +1,18 @@
 # `githodl`
 
-A tool for *gith*ub *do*wn*l*oad.  Just slightly rearranged for comedic effect.
+A tool for **gith**ub **do**wn**l**oad.  Slightly rearranged for comedic effect.
 
 ## Motivation
 
-I'm sure something else like this exists.  I have found various "working" ones
+I'm sure something else like this exists.  I have found some "working" ones
 around the internet.  But many of them seemed to either be outdated or rate-
-limited.  This should hopefully alleviate some of those.
+limited.  This should hopefully provide a better alternative.
 
 ## Usage
+
+**Highly** recommended to generate an API key to use with this.
+
+[Click here](https://github.com/settings/tokens)
 
 ```
 githodl 0.1.0
