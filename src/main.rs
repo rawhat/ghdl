@@ -72,7 +72,11 @@ fn main() -> Result<()> {
 
     let mut headers = HeaderMap::new();
     headers.insert(ACCEPT, HeaderValue::from_static("vnd.github.v3+json"));
-    if let Some(ref api_token) = opts.api_key {
+    let api_token = opts
+        .api_key
+        .clone()
+        .or_else(|| env::var("GHDL_API_KEY").ok());
+    if let Some(api_token) = api_token {
         headers.insert(
             AUTHORIZATION,
             HeaderValue::from_str(format!("token {}", &api_token).as_str()).unwrap(),

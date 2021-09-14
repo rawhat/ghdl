@@ -10,7 +10,8 @@ limited.  This should hopefully provide a better alternative.
 
 ## Usage
 
-**Highly** recommended to generate an API key to use with this.
+**Highly** recommended to generate an API key to use with this.  Either pass it
+as `--api-key` or set an environment variable `GHDL_API_KEY`.
 
 [Click here](https://github.com/settings/tokens)
 
